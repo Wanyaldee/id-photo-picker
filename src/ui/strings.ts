@@ -1,3 +1,4 @@
+import type { BackgroundChoice } from "../background/config";
 import type { ScoringConfig } from "../scoring/config";
 import type { ExclusionKey, ItemKey, ReasonKey } from "../scoring/score";
 import type { FieldGroup } from "./settingsFields";
@@ -36,6 +37,12 @@ const reasons: Record<ReasonKey, string> = {
 const exclusions: Record<ExclusionKey, string> = {
   noFace: "顔を検出できませんでした",
   multipleFaces: "複数の顔が写っています",
+};
+
+const backgrounds: Record<BackgroundChoice, string> = {
+  none: "そのまま(変更しない)",
+  white: "白",
+  lightBlue: "薄い青",
 };
 
 const sorts: Record<SortKey, string> = {
@@ -149,6 +156,13 @@ export const strings = {
 
   exportTitle: "書き出し",
   exportPreviewLabel: "書き出しのプレビュー",
+  exportPreviewCaption: "プレビュー(354 × 472 px の実寸)",
+  backgroundLegend: "背景",
+  backgroundWorking: "背景を処理しています…",
+  backgroundCheckEdges:
+    "髪や肩の縁が不自然でないか、実寸のプレビューで確認してください。気になる場合は「そのまま」に戻せます。",
+  backgroundFailed: (detail: string) =>
+    `背景を処理できなかったため、「そのまま」に戻しました。元の背景のままなら書き出せます。(${detail})`,
   exportSizeLegend: "サイズ",
   exportSizePrint: "354 × 472 px(30 × 40 mm・300 dpi 相当)",
   exportSizeLarge: (width: number, height: number) => `大きいサイズ ${width} × ${height} px`,
@@ -177,6 +191,7 @@ export const strings = {
   settingsNote: "変更はすぐ一覧に反映され、このブラウザに保存されます(保存するのは数値だけです)。",
 
   items,
+  backgrounds,
   reasons,
   exclusions,
   sorts,

@@ -13,6 +13,18 @@ CDN at run time.
 - SHA-256: `64184e229b263107bc2b804c6625db1341ff2bb731874b0bcc2fe6544e0bc9ff`
 - Downloaded: 2026-11-14. Unmodified.
 
+## models/selfie_multiclass_256x256.tflite
+
+- What: MediaPipe multi-class selfie segmentation model (background, hair,
+  body skin, face skin, clothes, others), 256 x 256 input, float32. Used only
+  to separate the person from the background; loaded only when the user picks
+  a background colour.
+- Source: <https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite>
+- Documentation: <https://ai.google.dev/edge/mediapipe/solutions/vision/image_segmenter>
+- License: Apache License 2.0 (Google LLC).
+- SHA-256: `c6748b1253a99067ef71f7e26ca71096cd449baefa8f101900ea23016507e0e0`
+- Downloaded: 2026-11-14. Unmodified.
+
 ## wasm/ (not in git)
 
 - What: the WebAssembly runtime of `@mediapipe/tasks-vision`

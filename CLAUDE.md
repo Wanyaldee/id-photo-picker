@@ -35,7 +35,7 @@
   - 設定は `vite.config.ts` に集約。import は `vite` / `vitest` ではなく `vite-plus` / `vite-plus/test` から行う。
 - TypeScript(strict)+ Preact。
 - 顔解析: `@mediapipe/tasks-vision` の FaceLandmarker(Apache-2.0)。WASM とモデルは `public/` に同梱し、CDN に依存しない。
-- 背景分離: 同 ImageSegmenter(selfie segmentation 系)。より精度が必要なら別案を ADR で比較。
+- 背景分離: 同 ImageSegmenter(selfie_multiclass_256x256)。より精度が必要なら別案を ADR で比較。
 - 重い処理は Web Worker(または OffscreenCanvas)で行い、UI を固めない。大量の画像は並列数を制限して順次処理する。
 - テスト: Vitest(スコア計算・トリミング計算)、必要に応じて Playwright(読み込み〜書き出し)。
 - デプロイ: GitHub Pages(GitHub Actions)。
@@ -115,9 +115,9 @@
 - 公開リポジトリ名: **id-photo-picker**。README は**日本語のみ**。
 - ツールチェーン: **Vite+**(lint/format は同梱の Oxlint/Oxfmt。Biome・ESLint は入れない)。
 
-未決:
+- 背景分離のモデル: **MediaPipe selfie_multiclass_256x256** + マスクの後処理(穴埋め・切れ端除去)。実写4枚で比較して決定(`docs/adr/0005-background-replacement.md`)。
 
-- 背景分離のモデルは MediaPipe 同梱のもので十分か(マイルストーン 5 で精度を見て決める)。
+未決: なし。
 
 ## 9. コーディング規約
 

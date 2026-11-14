@@ -339,7 +339,7 @@ input[type="range"] {
 
 .detail-body {
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(260px, 2fr);
+  grid-template-columns: minmax(0, 3fr) minmax(370px, 2fr);
   gap: 1rem;
   margin-top: 0.75rem;
 }
@@ -414,27 +414,15 @@ input[type="range"] {
   margin-top: 0;
 }
 
-.export-body {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.export-preview {
-  flex: none;
-  width: 177px;
-  height: 236px;
-  border: 1px solid var(--border);
-  background: light-dark(#ececec, #1f1f21);
-}
-
 .export-options {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.85rem;
 }
 
 .export-options fieldset {
+  flex: 1 1 8rem;
   margin: 0;
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--border);
@@ -445,7 +433,22 @@ input[type="range"] {
   display: block;
 }
 
-.export-options .tag {
+.export-preview {
+  margin: 0.75rem 0;
+}
+
+.export-preview canvas {
+  display: block;
+  width: 354px;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  background: light-dark(#ececec, #1f1f21);
+}
+
+.export .tag {
+  display: block;
+  margin-bottom: 0.5rem;
   white-space: normal;
 }
 
