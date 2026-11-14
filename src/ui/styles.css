@@ -1,0 +1,45 @@
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f7f7f5, #1c1c1e);
+  --surface: light-dark(#ffffff, #2a2a2d);
+  --text: light-dark(#1f2328, #e8e8ea);
+  --muted: light-dark(#5b6370, #a4a8b0);
+  --border: light-dark(#d5d8dd, #44464c);
+  --accent: light-dark(#1f5fbf, #7fb0ff);
+  font-family: system-ui, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.app-header p {
+  margin: 0.25rem 0 1rem;
+  color: var(--muted);
+}
+
+.notice {
+  margin: 0.25rem 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  font-size: 0.9rem;
+}

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# Personal photos must never be committed (CLAUDE.md §5).
+samples/
+*.heic
+*.HEIC
+*.heif
+*.HEIF
+/*.jpg
+/*.jpeg
+/*.png
+/*.webp
+.vitest/
