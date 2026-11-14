@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "preact/hooks";
-import { estimateHeadTopY } from "../crop/autoCrop";
+import { centeredFrame, fitFrame } from "../crop/frame";
 import type { PhotoScore } from "../scoring/score";
-import type { FaceMeasurements } from "../scoring/types";
+import type { FaceMeasurements, Rect } from "../scoring/types";
+import { CropControls, CropOverlay } from "./CropEditor";
+import { ExportPanel } from "./ExportPanel";
 import type { Photo } from "./photo";
 import { strings } from "./strings";
 
@@ -20,24 +22,13 @@ function useFileUrl(file: File): string | null {
   return url;
 }
 
-// 3:4 frame plus head-top and chin lines, drawn in image-pixel coordinates
-// over the photo.
-function Guides({ photo, score }: { photo: ReadyPhoto; score: PhotoScore }) {
-  const face = photo.state.analysis.face;
-  if (score.kind !== "scored" || !face) return null;
+// Where the frame starts: the automatic frame from face detection, pulled
+// inside the photo; or a centred frame when there is no single face.
+function initialFrame(photo: ReadyPhoto, score: PhotoScore): Rect {
   const { width, height } = photo.state;
-  const { crop } = score;
-  const stroke = Math.max(width, height) / 300;
-  const line = (y: number) => (
-    <line x1={crop.x} x2={crop.x + crop.width} y1={y} y2={y} stroke-dasharray={stroke * 4} />
-  );
-  return (
-    <svg class="guides" viewBox={`0 0 ${width} ${height}`} stroke-width={stroke} aria-hidden="true">
-      <rect x={crop.x} y={crop.y} width={crop.width} height={crop.height} />
-      {line(estimateHeadTopY(face))}
-      {line(face.chinY)}
-    </svg>
-  );
+  return score.kind === "scored"
+    ? fitFrame(score.crop, width, height)
+    : centeredFrame(width, height);
 }
 
 function measurementRows(face: FaceMeasurements): [string, string][] {
@@ -98,9 +89,6 @@ function ScoreBreakdown({ photo, score }: { photo: ReadyPhoto; score: PhotoScore
           ))}
         </tbody>
       </table>
-      <p class="muted">
-        {strings.cropSize(Math.round(score.crop.width), Math.round(score.crop.height))}
-      </p>
       {face && (
         <>
           <h3>{strings.measurements}</h3>
@@ -123,6 +111,11 @@ function ScoreBreakdown({ photo, score }: { photo: ReadyPhoto; score: PhotoScore
 export function Detail({ photo, score, onClose }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const url = useFileUrl(photo.file);
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  // The frame starts from the score at the time the dialog opened; later
+  // slider changes in the settings must not move a frame the user adjusted.
+  const [frame, setFrame] = useState<Rect>(() => initialFrame(photo, score));
+  const { width, height } = photo.state;
 
   useEffect(() => {
     dialog.current?.showModal();
@@ -138,14 +131,39 @@ export function Detail({ photo, score, onClose }: Props) {
         </button>
       </header>
       <div class="detail-body">
-        <div class="detail-photo">
-          {url && <img src={url} alt={photo.file.name} decoding="async" />}
-          <Guides photo={photo} score={score} />
+        <div>
+          <div class="detail-photo">
+            {url && (
+              <img
+                src={url}
+                alt={photo.file.name}
+                decoding="async"
+                onLoad={(event) => setImage(event.currentTarget)}
+              />
+            )}
+            <CropOverlay
+              imageWidth={width}
+              imageHeight={height}
+              frame={frame}
+              onChange={setFrame}
+            />
+          </div>
+          <CropControls
+            imageWidth={width}
+            imageHeight={height}
+            frame={frame}
+            onChange={setFrame}
+            onReset={() => setFrame(initialFrame(photo, score))}
+          />
+          <p class="muted">{strings.cropHelp}</p>
         </div>
         <div class="detail-side">
+          <ExportPanel file={photo.file} frame={frame} image={image} />
           <ScoreBreakdown photo={photo} score={score} />
-          <p class="muted">{strings.imageSize(photo.state.width, photo.state.height)}</p>
-          {score.kind === "scored" && <p class="muted">{strings.guideLegend}</p>}
+          <p class="muted">
+            {strings.imageSize(width, height)} /{" "}
+            {strings.cropSize(Math.round(frame.width), Math.round(frame.height))}
+          </p>
           <p class="muted">{strings.finalCheckNote}</p>
         </div>
       </div>

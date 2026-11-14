@@ -141,7 +141,23 @@ export const strings = {
   measurements: "測定値",
   imageSize: (width: number, height: number) => `元画像 ${width} × ${height} px`,
   cropSize: (width: number, height: number) => `切り出し枠 ${width} × ${height} px`,
-  guideLegend: "白枠: 3:4 の切り出し枠 / 上の線: 頭頂の目安 / 下の線: あごの位置",
+  cropHelp:
+    "枠をドラッグして位置を、スライダーかマウスホイールで大きさを調整します。枠の中の点線は、上が頭頂、下があごを合わせる目安です。",
+  cropFrameLabel: "切り出し枠(矢印キーで移動、+ と - で大きさを変更)",
+  cropSizeSlider: "枠の大きさ",
+  cropReset: "自動の位置に戻す",
+
+  exportTitle: "書き出し",
+  exportPreviewLabel: "書き出しのプレビュー",
+  exportSizeLegend: "サイズ",
+  exportSizePrint: "354 × 472 px(30 × 40 mm・300 dpi 相当)",
+  exportSizeLarge: (width: number, height: number) => `大きいサイズ ${width} × ${height} px`,
+  exportFormatLegend: "形式",
+  exportButton: (fileName: string) => `書き出す(${fileName})`,
+  exporting: "書き出し中…",
+  exportFailed: (detail: string) => `書き出しに失敗しました: ${detail}`,
+  exportUpscaleWarning: (width: number) =>
+    `枠の幅が ${width} px しかなく、354 px に引き伸ばされます。ぼやけて見えることがあります。`,
   measure: {
     sharpness: "鮮明度(ラプラシアン分散)",
     eyeBlink: "まばたき度",
