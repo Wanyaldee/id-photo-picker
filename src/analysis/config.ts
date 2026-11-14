@@ -10,3 +10,12 @@ export const WORKER_COUNT = 2;
 // few hundred photos do not stay decoded in memory.
 export const THUMBNAIL_LONG_EDGE_PX = 320;
 export const THUMBNAIL_JPEG_QUALITY = 0.8;
+
+// Face detection runs on a copy scaled to this long edge. Landmarks come back
+// in normalised coordinates, so the result is the same as on the full image
+// for any face large enough to be an ID photo, at a fraction of the cost.
+export const DETECTION_LONG_EDGE_PX = 1024;
+
+// Ask for more than one face so that group photos can be recognised and
+// excluded; the exact number beyond two does not matter.
+export const MAX_FACES = 4;

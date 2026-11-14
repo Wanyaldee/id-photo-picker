@@ -11,9 +11,11 @@
     "preview": "vp preview",
     "test": "vp test run",
     "check": "vp check",
-    "fix": "vp check --fix"
+    "fix": "vp check --fix",
+    "postinstall": "node scripts/copy-mediapipe-wasm.mjs"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.2.3",
     "preact": "^11.2.0"
   },
   "devDependencies": {

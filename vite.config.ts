@@ -49,6 +49,11 @@ export default defineConfig({
   // and from any other sub-path without knowing the repo name.
   base: "./",
   plugins: lazyPlugins(() => [preact(), cspMetaTag()]),
+  // ES-module workers in both dev and build: MediaPipe loads its WASM glue
+  // with `import()`, using the module variant of its loader.
+  worker: {
+    format: "es",
+  },
   test: {
     include: ["tests/**/*.test.ts"],
   },

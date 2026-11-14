@@ -1,11 +1,47 @@
-import type { Photo } from "./photo";
+import type { PhotoScore } from "../scoring/score";
 import { strings } from "./strings";
+import type { Row } from "./view";
 
-function PhotoCard({ photo }: { photo: Photo }) {
+function exclusionText(score: Extract<PhotoScore, { kind: "excluded" }>): string {
+  return score.reason === "multipleFaces" && score.faceCount > 1
+    ? strings.multipleFacesCount(score.faceCount)
+    : strings.exclusions[score.reason];
+}
+
+function ScoreSummary({ score }: { score: PhotoScore }) {
+  if (score.kind === "excluded") {
+    return (
+      <div class="card-summary">
+        <span class="badge badge-excluded">{strings.excludedLabel}</span>
+        <span class="tag tag-excluded">{exclusionText(score)}</span>
+      </div>
+    );
+  }
+  return (
+    <div class="card-summary">
+      <span class="badge" title={strings.totalScore}>
+        {Math.round(score.total)}
+      </span>
+      {score.reasons.map((reason) => (
+        <span key={reason} class="tag">
+          {strings.reasons[reason]}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function PhotoCard({ row, onOpen }: { row: Row; onOpen: (id: number) => void }) {
+  const { photo, score } = row;
   const { state } = photo;
   return (
     <li class="card">
-      <div class="card-image">
+      <button
+        type="button"
+        class="card-image"
+        disabled={state.kind !== "ready"}
+        onClick={() => onOpen(photo.id)}
+      >
         {state.kind === "ready" && (
           // Width/height reserve the box before the image paints, so the grid
           // does not jump as thumbnails arrive.
@@ -20,11 +56,13 @@ function PhotoCard({ photo }: { photo: Photo }) {
         )}
         {state.kind === "pending" && <span class="card-status">{strings.loading}</span>}
         {state.kind === "failed" && (
-          <span class="card-status card-error" title={state.detail}>
-            {strings.decodeFailed}
+          <span class="card-status card-error">
+            {state.reason === "decode-failed" ? strings.decodeFailed : strings.analysisFailed}
+            {state.reason === "analysis-failed" && <small>{state.detail}</small>}
           </span>
         )}
-      </div>
+      </button>
+      {score && <ScoreSummary score={score} />}
       <p class="card-name" title={photo.file.name}>
         {photo.file.name}
       </p>
@@ -32,11 +70,13 @@ function PhotoCard({ photo }: { photo: Photo }) {
   );
 }
 
-export function PhotoGrid({ photos }: { photos: readonly Photo[] }) {
+type Props = { rows: readonly Row[]; onOpen: (id: number) => void };
+
+export function PhotoGrid({ rows, onOpen }: Props) {
   return (
     <ul class="grid">
-      {photos.map((photo) => (
-        <PhotoCard key={photo.id} photo={photo} />
+      {rows.map((row) => (
+        <PhotoCard key={row.photo.id} row={row} onOpen={onOpen} />
       ))}
     </ul>
   );

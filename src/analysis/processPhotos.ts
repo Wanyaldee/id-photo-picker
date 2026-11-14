@@ -13,7 +13,11 @@ function requestPhoto(worker: Worker, job: PhotoJob): Promise<PhotoResult> {
     worker.onmessage = (event: MessageEvent<PhotoResult>) => resolve(event.data);
     worker.onerror = (event) =>
       resolve({ id: job.id, ok: false, reason: "decode-failed", detail: event.message });
-    const request: PhotoRequest = { id: job.id, file: job.file };
+    const request: PhotoRequest = {
+      id: job.id,
+      file: job.file,
+      mediapipeBaseUrl: new URL("mediapipe/", document.baseURI).href,
+    };
     worker.postMessage(request);
   });
 }
