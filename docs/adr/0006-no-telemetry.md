@@ -2,6 +2,9 @@
 
 Date: 2026-11-14
 
+Status: Accepted — the pin was made by the AI agent without asking first and
+approved by the project owner on 2026-11-15.
+
 ## Context
 
 CLAUDE.md §1 and §5 rule out analytics and any network transmission, and the
