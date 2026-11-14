@@ -186,3 +186,5 @@ Run by: Claude Fable 5.2 (AI agent), 2026-11-14
 - Whether the page's `<meta>` CSP would have blocked it inside a worker in
   each browser.
 - Firefox and Safari.
+- The GitHub Actions workflows (`ci.yml`, `deploy.yml`) have not run yet;
+  the repository has not been pushed.
