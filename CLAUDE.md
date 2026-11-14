@@ -35,6 +35,8 @@
   - 設定は `vite.config.ts` に集約。import は `vite` / `vitest` ではなく `vite-plus` / `vite-plus/test` から行う。
 - TypeScript(strict)+ Preact。
 - 顔解析: `@mediapipe/tasks-vision` の FaceLandmarker(Apache-2.0)。WASM とモデルは `public/` に同梱し、CDN に依存しない。
+  - **バージョンは 0.10.35 に厳密固定。上げない。** 1.0.0 以降は利用状況の計測値を Google に送信するため(`docs/adr/0006-no-telemetry.md`)。`tests/privacy.test.ts` が混入を検知する。
+  - Worker は必ず最初に `src/analysis/networkGuard.ts` を import する(自オリジン以外への通信を遮断)。
 - 背景分離: 同 ImageSegmenter(selfie_multiclass_256x256)。より精度が必要なら別案を ADR で比較。
 - 重い処理は Web Worker(または OffscreenCanvas)で行い、UI を固めない。大量の画像は並列数を制限して順次処理する。
 - テスト: Vitest(スコア計算・トリミング計算)、必要に応じて Playwright(読み込み〜書き出し)。

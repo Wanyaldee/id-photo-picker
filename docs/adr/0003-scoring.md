@@ -14,7 +14,8 @@ sliders; scoring logic must be pure and unit-tested.
 Two stages, split at the worker boundary:
 
 1. **Measure (worker, once per photo)** — `src/analysis/faceAnalyzer.ts` runs
-   MediaPipe FaceLandmarker (`@mediapipe/tasks-vision` 1.2.3, Apache-2.0) and
+   MediaPipe FaceLandmarker (`@mediapipe/tasks-vision`, Apache-2.0; written
+   against 1.2.3, since pinned to 0.10.35 by ADR 0006 with identical scores) and
    returns raw `FaceMeasurements`: landmark positions, blendshapes, head
    angles, and pixel statistics of the face region.
 2. **Score (page, on every config change)** — `scorePhoto()` in
@@ -23,7 +24,8 @@ Two stages, split at the worker boundary:
 
 The model file is committed under `public/mediapipe/models/` (with source,
 licence and SHA-256 in `public/mediapipe/README.md`). The WASM runtime is
-copied from `node_modules` by a `postinstall` script and git-ignored.
+copied from `node_modules` at build start (originally by a `postinstall`
+script; changed in ADR 0006) and git-ignored.
 
 ## Reason
 

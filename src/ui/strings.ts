@@ -108,6 +108,8 @@ export const strings = {
   usageNote:
     "履歴書などの用途向けです。パスポートやマイナンバーカードなど、加工が禁止される用途には使えません。",
 
+  thirdPartyNotices: "使用しているソフトウェアとモデルのライセンス",
+
   dropHint: "ここに写真またはフォルダをドラッグ&ドロップ",
   dropFormats: "JPEG / PNG / WebP に対応しています",
   chooseFiles: "ファイルを選ぶ",

@@ -15,5 +15,5 @@ samples/
 /*.webp
 .vitest/
 
-# Copied from node_modules by scripts/copy-mediapipe-wasm.mjs
+# Copied from node_modules by the copy-mediapipe-wasm plugin in vite.config.ts
 public/mediapipe/wasm/

@@ -165,6 +165,10 @@ export function App() {
       )}
       <PhotoGrid rows={shown} onOpen={setOpenId} />
 
+      <footer class="app-footer muted">
+        <a href="THIRD_PARTY_NOTICES.txt">{strings.thirdPartyNotices}</a>
+      </footer>
+
       {open?.score && open.photo.state.kind === "ready" && (
         <Detail
           key={open.photo.id}

@@ -1,3 +1,5 @@
+import { copyFileSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
 import preact from "@preact/preset-vite";
 import type { Plugin } from "vite-plus";
 import { defineConfig, lazyPlugins } from "vite-plus";
@@ -38,6 +40,25 @@ function cspMetaTag(): Plugin {
   };
 }
 
+// Copies MediaPipe's WASM runtime from node_modules into public/ before every
+// dev start and build, so the app serves it from its own origin instead of a
+// CDN (CLAUDE.md §2, §5) and it always matches the installed package version.
+// The copy is git-ignored. Only the ES-module variant is needed: the analysis
+// runs in module workers.
+function copyMediapipeWasm(): Plugin {
+  const from = join(import.meta.dirname, "node_modules/@mediapipe/tasks-vision/wasm");
+  const to = join(import.meta.dirname, "public/mediapipe/wasm");
+  return {
+    name: "copy-mediapipe-wasm",
+    buildStart() {
+      mkdirSync(to, { recursive: true });
+      for (const file of ["vision_wasm_module_internal.js", "vision_wasm_module_internal.wasm"]) {
+        copyFileSync(join(from, file), join(to, file));
+      }
+    },
+  };
+}
+
 export default defineConfig({
   fmt: {},
   lint: {
@@ -48,7 +69,7 @@ export default defineConfig({
   // Relative base: the same build works at https://<user>.github.io/<repo>/
   // and from any other sub-path without knowing the repo name.
   base: "./",
-  plugins: lazyPlugins(() => [preact(), cspMetaTag()]),
+  plugins: lazyPlugins(() => [copyMediapipeWasm(), preact(), cspMetaTag()]),
   // ES-module workers in both dev and build: MediaPipe loads its WASM glue
   // with `import()`, using the module variant of its loader.
   worker: {

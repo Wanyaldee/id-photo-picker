@@ -1,7 +1,7 @@
 # Third-party files served by the app
 
 Everything here is loaded from the app's own origin; nothing is fetched from a
-CDN at run time.
+CDN at run time. The Apache License 2.0 text is in `LICENSE-APACHE-2.0.txt`.
 
 ## models/face_landmarker.task
 
@@ -29,7 +29,9 @@ CDN at run time.
 
 - What: the WebAssembly runtime of `@mediapipe/tasks-vision`
   (`vision_wasm_module_internal.js` / `.wasm`).
-- Copied from `node_modules/@mediapipe/tasks-vision/wasm/` by
-  `scripts/copy-mediapipe-wasm.mjs` on `npm install`, so it always matches the
-  installed package version.
+- Copied from `node_modules/@mediapipe/tasks-vision/wasm/` by the
+  `copy-mediapipe-wasm` plugin in `vite.config.ts` at every dev start and
+  build, so it always matches the installed package version.
+- Version: `@mediapipe/tasks-vision` 0.10.35, pinned exactly. Versions from
+  1.0.0 on send usage metrics to Google; see `docs/adr/0006-no-telemetry.md`.
 - License: Apache License 2.0 (The MediaPipe Authors).

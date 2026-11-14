@@ -1,4 +1,7 @@
 /// <reference lib="webworker" />
+// Must stay the first import: it locks the worker to same-origin requests
+// before any library code runs.
+import "../analysis/networkGuard";
 import { FilesetResolver, ImageSegmenter } from "@mediapipe/tasks-vision";
 import { BACKGROUND_MASK_INDEX } from "./config";
 import type { SegmentRequest, SegmentResult } from "./messages";

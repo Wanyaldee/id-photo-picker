@@ -1,4 +1,7 @@
 /// <reference lib="webworker" />
+// Must stay the first import: it locks the worker to same-origin requests
+// before any library code runs.
+import "./networkGuard";
 import type { Analysis } from "../scoring/types";
 import { THUMBNAIL_JPEG_QUALITY, THUMBNAIL_LONG_EDGE_PX } from "./config";
 import { analyzeFace } from "./faceAnalyzer";
